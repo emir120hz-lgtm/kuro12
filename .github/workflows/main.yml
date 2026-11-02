@@ -1,0 +1,32 @@
+name: Build Mod (1.21.4)
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Cek
+        uses: actions/checkout@v4
+
+      - name: Java 21 Kur
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Gradle Kur
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.12
+
+      - name: Modu Derle (.jar olustur)
+        run: gradle build --no-daemon
+
+      - name: JAR Dosyasini Yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: kuro-1.21.4-jar
+          path: build/libs/*.jar
